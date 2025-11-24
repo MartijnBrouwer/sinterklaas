@@ -24,7 +24,7 @@
         position: absolute;
         top: 0; left: 0;
         width: 100%; height: 100%;
-        background-color: rgba(255,255,255,0.3); /* transparant wit */
+        background-color: rgba(255,255,255,0.3);
         z-index: 0;
     }
 
@@ -32,11 +32,11 @@
         position: relative;
         z-index: 1;
         background: rgba(255, 255, 255, 0.85);
-        padding: 30px;
+        padding: 50px;
         border-radius: 12px;
-        box-shadow: 0 0 15px rgba(0,0,0,0.4);
+        box-shadow: 0 0 20px rgba(0,0,0,0.5);
         text-align: center;
-        width: 320px;
+        width: 400px;
     }
 
     h1 {
@@ -46,9 +46,9 @@
 
     input[type="text"] {
         width: 90%;
-        padding: 10px;
+        padding: 12px;
         margin: 10px 0;
-        font-size: 1.1em;
+        font-size: 1.2em;
         border: 2px solid #b22222;
         border-radius: 6px;
     }
@@ -56,8 +56,8 @@
     button {
         background: #b22222;
         color: gold;
-        font-size: 1.1em;
-        padding: 10px 20px;
+        font-size: 1.2em;
+        padding: 12px 25px;
         border: none;
         border-radius: 6px;
         cursor: pointer;
@@ -68,24 +68,47 @@
         color: #b22222;
     }
 
-    #message {
+    #message, #error {
         margin-top: 20px;
-        font-size: 1.2em;
+        font-size: 1.3em;
+        font-weight: bold;
+        display: none;
+    }
+
+    #message {
+        color: green;
+    }
+
+    #error {
+        color: red;
+    }
+
+    #main-message {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 3em;
         color: green;
         font-weight: bold;
         display: none;
+        z-index: 1;
+        text-align: center;
     }
 </style>
 </head>
 <body>
-<div class="login-box">
+<div class="login-box" id="login-box">
     <h1>Welkom Sinterklaas!</h1>
     <p>Voer het geheime wachtwoord in:</p>
     <input type="text" id="password" placeholder="Wachtwoord zichtbaar">
     <br>
     <button onclick="checkPassword()">Inloggen</button>
+    <div id="error"></div>
     <div id="message">De cadeaukamer is geopend 🎁</div>
 </div>
+
+<div id="main-message">De cadeaukamer is geopend 🎁</div>
 
 <audio id="buzzer" src="sounds/wrong.wav"></audio>
 <audio id="loginSound" src="sounds/good.wav"></audio>
@@ -94,16 +117,27 @@
 function checkPassword() {
     const pwd = document.getElementById('password').value;
     const message = document.getElementById('message');
+    const error = document.getElementById('error');
+    const loginBox = document.getElementById('login-box');
+    const mainMessage = document.getElementById('main-message');
 
     if(pwd === 'Pepernoot') {
         // Goed wachtwoord
         document.getElementById('loginSound').play();
-        message.style.display = 'block';
+        error.style.display = 'none';
+        message.style.display = 'none';
+
+        // Verberg login-box
+        loginBox.style.display = 'none';
+
+        // Toon groot bericht
+        mainMessage.style.display = 'block';
     } else {
         // Fout wachtwoord
         document.getElementById('buzzer').play();
+        error.textContent = 'Fout wachtwoord! Probeer opnieuw.';
+        error.style.display = 'block';
         message.style.display = 'none';
-        alert('Fout wachtwoord! Probeer opnieuw.');
     }
 }
 </script>
